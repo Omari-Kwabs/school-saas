@@ -1,0 +1,43 @@
+{
+  "name": "school-saas-backend",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest --runInBand --forceExit"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1048.0",
+    "@aws-sdk/s3-request-presigner": "^3.1048.0",
+    "@sentry/node": "^10.53.1",
+    "bcryptjs": "^2.4.3",
+    "bullmq": "^5.76.8",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.5.0",
+    "handlebars": "^4.7.9",
+    "ioredis": "^5.10.1",
+    "jsonwebtoken": "^9.0.0",
+    "multer": "^2.1.1",
+    "pg": "^8.11.0",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.0",
+    "supertest": "^7.2.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "testTimeout": 30000
+  },
+  "optionalDependencies": {
+    "rate-limit-redis": "^5.0.0"
+  }
+}

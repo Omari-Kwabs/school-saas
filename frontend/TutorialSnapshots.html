@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SchoolSaaS — User Tutorial Snapshots</title>
+<style>
+  /* ── Base ─────────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f4f6fb; color: #222; }
+
+  /* ── Layout ──────────────────────────────────────────────────────── */
+  .layout { display: flex; min-height: 100vh; }
+
+  /* ── Sidebar (Table of Contents) ─────────────────────────────────── */
+  .sidebar {
+    width: 230px; min-width: 230px; background: #1e2a3a; color: #c5d0de;
+    padding: 24px 0; position: sticky; top: 0; height: 100vh;
+    overflow-y: auto; flex-shrink: 0;
+  }
+  .sidebar-title {
+    font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: #7a8fa6; padding: 0 20px 16px; border-bottom: 1px solid #2c3e50; margin-bottom: 8px;
+  }
+  .sidebar a {
+    display: block; padding: 8px 20px; font-size: 13px; color: #c5d0de;
+    text-decoration: none; border-left: 3px solid transparent; transition: all 0.15s;
+    line-height: 1.4;
+  }
+  .sidebar a:hover { background: #243447; color: #fff; border-left-color: #1a73e8; }
+  .sidebar .section-head {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    color: #4a6070; padding: 14px 20px 4px; pointer-events: none;
+  }
+
+  /* ── Main content ─────────────────────────────────────────────────── */
+  .main { flex: 1; padding: 40px 48px; max-width: 1000px; }
+
+  /* ── Tutorial section ─────────────────────────────────────────────── */
+  .tutorial-section { margin-bottom: 72px; scroll-margin-top: 24px; }
+  .tutorial-section h2 {
+    font-size: 22px; font-weight: 800; color: #1a2336; margin-bottom: 6px;
+    padding-bottom: 10px; border-bottom: 2px solid #e0e7f0;
+  }
+  .tutorial-section .section-desc {
+    font-size: 14px; color: #555; margin: 10px 0 20px; line-height: 1.7;
+  }
+
+  /* ── Steps ────────────────────────────────────────────────────────── */
+  .steps { list-style: none; margin: 0 0 20px; }
+  .steps li {
+    display: flex; gap: 14px; margin-bottom: 10px; font-size: 13.5px; line-height: 1.6;
+    align-items: flex-start;
+  }
+  .steps .num {
+    min-width: 24px; height: 24px; background: #1a73e8; color: #fff;
+    border-radius: 50%; font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+  .steps li b { color: #1a2336; }
+
+  /* ── Tip box ─────────────────────────────────────────────────────── */
+  .tip {
+    background: #e8f0fe; border-left: 4px solid #1a73e8; border-radius: 0 6px 6px 0;
+    padding: 10px 14px; font-size: 13px; color: #1a2336; margin-bottom: 18px; line-height: 1.6;
+  }
+  .tip.warn { background: #fff8e1; border-color: #f9a825; }
+  .tip.success { background: #e8f5e9; border-color: #27ae60; }
+
+  /* ────────────────────────────────────────────────────────────────── */
+  /* MOCKUP STYLES (replicating the actual app)                        */
+  /* ────────────────────────────────────────────────────────────────── */
+  .mockup {
+    background: #f0f2f5; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13); margin-bottom: 24px;
+    border: 1px solid #d0d7e3;
+  }
+  .mockup-bar {
+    background: #fff; padding: 10px 16px; display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .mockup-dot { width: 11px; height: 11px; border-radius: 50%; }
+  .mockup-url {
+    flex: 1; background: #f4f4f4; border-radius: 4px; padding: 4px 10px;
+    font-size: 12px; color: #888; font-family: monospace; text-align: center;
+  }
+  .mockup-body { display: flex; }
+
+  /* App shell sidebar */
+  .app-sidebar {
+    width: 200px; min-width: 200px; background: #1e2a3a; min-height: 400px;
+    padding: 16px 0; flex-shrink: 0;
+  }
+  .app-sidebar .brand {
+    font-size: 16px; font-weight: 800; color: #fff; padding: 0 16px 16px;
+    border-bottom: 1px solid #2c3e50; margin-bottom: 8px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px; padding: 9px 16px;
+    font-size: 13px; color: #8fa8c0; cursor: pointer; transition: all 0.12s;
+  }
+  .nav-item.active { background: #243447; color: #fff; border-left: 3px solid #1a73e8; }
+  .nav-item span { font-size: 15px; }
+
+  /* App content area */
+  .app-content { flex: 1; padding: 20px 24px; background: #f4f6fb; overflow: hidden; }
+  .page-title { font-size: 20px; font-weight: 700; color: #1a2336; margin-bottom: 16px; }
+
+  /* Cards row */
+  .cards-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+  .stat-card {
+    background: #fff; border-radius: 8px; padding: 14px 18px; flex: 1; min-width: 120px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .stat-card .label { font-size: 12px; color: #888; margin-bottom: 4px; }
+  .stat-card .value { font-size: 26px; font-weight: 800; }
+
+  /* Panel / card */
+  .panel { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 16px 20px; margin-bottom: 16px; }
+  .panel-title { font-size: 14px; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+
+  /* Form elements */
+  .form-group { margin-bottom: 12px; }
+  .form-label { display: block; font-size: 12px; color: #555; margin-bottom: 4px; font-weight: 600; }
+  .form-input {
+    width: 100%; padding: 8px 11px; border: 1px solid #ddd; border-radius: 5px;
+    font-size: 13px; color: #333; background: #fff;
+  }
+  .form-select {
+    padding: 8px 11px; border: 1px solid #ddd; border-radius: 5px;
+    font-size: 13px; color: #333; background: #fff;
+  }
+  .form-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+  .form-row .form-group { flex: 1; min-width: 140px; }
+
+  /* Buttons */
+  .btn {
+    padding: 8px 18px; border-radius: 5px; font-size: 13px; font-weight: 600;
+    border: none; cursor: pointer; display: inline-block;
+  }
+  .btn-primary { background: #1a73e8; color: #fff; }
+  .btn-secondary { background: #f0f0f0; color: #333; }
+  .btn-success { background: #27ae60; color: #fff; }
+  .btn-danger { background: #fdecea; color: #e74c3c; border: 1px solid #f5c6c6; }
+  .btn-sm { padding: 5px 12px; font-size: 12px; }
+  .btn-wa { background: #25D366; color: #fff; }
+
+  /* Table */
+  table.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.data-table th {
+    background: #f7f9fc; padding: 9px 12px; text-align: left;
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #666;
+    border-bottom: 2px solid #e0e7f0;
+  }
+  table.data-table td { padding: 9px 12px; border-bottom: 1px solid #f0f0f0; }
+  table.data-table tr:hover td { background: #f7f9fb; }
+
+  /* Badge / pill */
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .badge-green { background: #e8f5e9; color: #27ae60; }
+  .badge-red   { background: #fdecea; color: #e74c3c; }
+  .badge-blue  { background: #e8f0fe; color: #1a73e8; }
+  .badge-orange{ background: #fff3e0; color: #e67e22; }
+  .badge-purple{ background: #f3e5f5; color: #8e44ad; }
+
+  /* Tabs */
+  .tab-bar { display: flex; gap: 2px; border-bottom: 2px solid #e0e0e0; margin-bottom: 18px; }
+  .tab-item {
+    padding: 8px 18px; font-size: 13px; font-weight: 600; cursor: pointer; color: #777;
+    border-bottom: 2px solid transparent; margin-bottom: -2px;
+  }
+  .tab-item.active { color: #1a73e8; border-bottom-color: #1a73e8; }
+
+  /* Alert */
+  .alert-success { background: #e8f5e9; border: 1px solid #a5d6a7; color: #1a5c2e; padding: 9px 14px; border-radius: 5px; font-size: 13px; margin-bottom: 12px; }
+  .alert-error   { background: #fdecea; border: 1px solid #f5c6c6; color: #922b21; padding: 9px 14px; border-radius: 5px; font-size: 13px; margin-bottom: 12px; }
+
+  /* Quick action cards */
+  .quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+  .quick-card {
+    background: #fff; border-radius: 10px; padding: 14px 10px; text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07); cursor: pointer;
+  }
+  .quick-card .icon { font-size: 26px; margin-bottom: 6px; }
+  .quick-card .qlabel { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+  .quick-card .qdesc { font-size: 10px; color: #888; }
+
+  /* Score input */
+  .score-input {
+    width: 68px; padding: 5px 8px; border: 1px solid #ddd; border-radius: 4px;
+    font-size: 13px; text-align: center;
+  }
+
+  /* Attendance status buttons */
+  .status-btn {
+    padding: 4px 10px; border-radius: 16px; font-size: 12px; font-weight: 600;
+    cursor: pointer; border: 1.5px solid;
+  }
+
+  /* Page header */
+  .page-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
+  }
+
+  /* Announcement card */
+  .ann-card {
+    background: #fff; border-radius: 8px; padding: 14px 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 10px;
+    border-left-width: 4px; border-left-style: solid;
+  }
+  .ann-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .ann-body  { font-size: 13px; color: #444; line-height: 1.6; margin-bottom: 8px; }
+  .ann-meta  { font-size: 11px; color: #aaa; }
+
+  /* Memo inbox item */
+  .memo-item {
+    background: #fff; border-radius: 8px; padding: 12px 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 6px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-left-width: 4px; border-left-style: solid; cursor: pointer;
+  }
+
+  /* Risk badge */
+  .risk-low    { background: #e8f5e9; color: #27ae60; }
+  .risk-medium { background: #fff3e0; color: #e67e22; }
+  .risk-high   { background: #fdecea; color: #e74c3c; }
+
+  /* Profile card */
+  .profile-info-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 4px;
+  }
+  .profile-field .field-label {
+    font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;
+  }
+  .profile-field .field-value { font-weight: 600; margin-top: 2px; font-size: 14px; }
+
+  /* Cover text for mockup annotation */
+  .annotation {
+    background: rgba(26,115,232,0.06); border: 1.5px dashed #1a73e8;
+    border-radius: 4px; padding: 3px 8px; font-size: 11px; color: #1a73e8;
+    display: inline-block; font-weight: 600; margin-left: 4px;
+  }
+
+  /* ── Print hide ──────────────────────────────────────────────────── */
+  @media print {
+    .sidebar { display: none; }
+    .main { padding: 20px; max-width: 100%; }
+    .mockup-bar { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- SIDEBAR                                                           -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<nav class="sidebar">
+  <div class="sidebar-title">SchoolSaaS Tutorials</div>
+
+  <div class="section-head">Getting Started</div>
+  <a href="#login">1. Logging In</a>
+  <a href="#onboarding">2. School Onboarding</a>
+
+  <div class="section-head">Dashboards</div>
+  <a href="#dashboard-staff">3. Staff Dashboard</a>
+  <a href="#dashboard-owner">4. Owner Dashboard</a>
+
+  <div class="section-head">Students</div>
+  <a href="#students">5. Student List</a>
+  <a href="#student-profile">6. Student Profile</a>
+
+  <div class="section-head">Academic</div>
+  <a href="#attendance">7. Attendance</a>
+  <a href="#grades">8. Grades Entry</a>
+  <a href="#results">9. Results & Reports</a>
+
+  <div class="section-head">Finance</div>
+  <a href="#fees">10. Fees & Payments</a>
+  <a href="#fee-structures">11. Fee Structures</a>
+
+  <div class="section-head">Communication</div>
+  <a href="#announcements">12. Announcements</a>
+  <a href="#memos">13. Memos</a>
+
+  <div class="section-head">Administration</div>
+  <a href="#users">14. Manage Users</a>
+  <a href="#timetable">15. Timetable</a>
+  <a href="#store">16. Store / Inventory</a>
+
+  <div class="section-head">Account</div>
+  <a href="#profile">17. My Profile</a>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- MAIN CONTENT                                                      -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<main class="main">
+
+  <h1 style="font-size:28px;font-weight:900;color:#1a2336;margin-bottom:6px;">SchoolSaaS — User Tutorial</h1>
+  <p style="font-size:14px;color:#666;margin-bottom:48px;line-height:1.7;">
+    Step-by-step visual guide for school staff. Each section shows a snapshot of the screen
+    followed by instructions on how to use it.
+  </p>
+
+
+  <!-- ================================================================ -->
+  <!-- 1. LOGIN                                                          -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="login">
+    <h2>1. Logging In</h2>
+    <p class="section-desc">
+      Every school user logs in from the same school portal. You will need your school code,
+      email address, and password — provided by your school owner or headmaster.
+    </p>
+
+    <!-- Mockup -->
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/login</div>
+      </div>
+      <div style="background:#f4f6fb;display:flex;justify-content:center;align-items:center;padding:48px 24px;">
+        <div style="background:#fff;border-radius:12px;padding:40px 36px;width:360px;box-shadow:0 4px 24px rgba(0,0,0,0.1);">
+          <h1 style="font-size:24px;font-weight:900;color:#1a2336;text-align:center;margin-bottom:28px;">SchoolSaaS</h1>
+          <div class="form-group">
+            <label class="form-label">School Code</label>
+            <input class="form-input" value="BFA001" readonly />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" value="teacher@brightfuture.edu" readonly />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input class="form-input" type="password" value="••••••••" readonly />
+          </div>
+          <button class="btn btn-primary" style="width:100%;margin-top:8px;padding:10px;">Sign In</button>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>Open your browser and go to the school portal URL (e.g. <code>http://localhost:5173/login</code> or the live domain your school uses).</div></li>
+      <li><span class="num">2</span><div>Enter your <b>School Code</b> exactly as given by your administrator (e.g. <code>BFA001</code>). This is case-sensitive.</div></li>
+      <li><span class="num">3</span><div>Enter your <b>Email</b> and <b>Password</b>.</div></li>
+      <li><span class="num">4</span><div>Click <b>Sign In</b>. On success you are taken to your dashboard.</div></li>
+    </ol>
+    <div class="tip warn">If login fails, double-check your school code first — it is the most common mistake. Contact your school owner if the account is locked.</div>
+    <div class="tip">Teachers and finance staff use the same login page. Do NOT use the <code>/admin/login</code> URL — that is for platform-level administrators only.</div>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 2. ONBOARDING                                                     -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="onboarding">
+    <h2>2. School Onboarding (First-time Setup)</h2>
+    <p class="section-desc">
+      When a school account is first created, the owner completes a step-by-step onboarding wizard
+      before the portal is fully usable. Each step builds on the last.
+    </p>
+
+    <!-- Mockup -->
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/onboarding</div>
+      </div>
+      <div style="background:#f4f6fb;padding:32px;">
+        <div style="max-width:580px;margin:0 auto;">
+          <div style="font-size:20px;font-weight:800;color:#1a2336;margin-bottom:20px;">School Onboarding Wizard</div>
+          <!-- Step progress bar -->
+          <div style="display:flex;gap:0;margin-bottom:28px;">
+            <div style="flex:1;text-align:center;">
+              <div style="width:28px;height:28px;background:#1a73e8;border-radius:50%;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;">1</div>
+              <div style="font-size:10px;color:#1a73e8;font-weight:600;">Identity</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="width:28px;height:28px;background:#1a73e8;border-radius:50%;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;">2</div>
+              <div style="font-size:10px;color:#1a73e8;font-weight:600;">Classes</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="width:28px;height:28px;background:#1a73e8;border-radius:50%;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;">3</div>
+              <div style="font-size:10px;color:#1a73e8;font-weight:600;">Terms</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="width:28px;height:28px;background:#1a73e8;border-radius:50%;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;">4</div>
+              <div style="font-size:10px;color:#1a73e8;font-weight:600;">Subjects</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="width:28px;height:28px;background:#e0e0e0;border-radius:50%;color:#999;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;">5</div>
+              <div style="font-size:10px;color:#aaa;font-weight:600;">Staff</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="width:28px;height:28px;background:#e0e0e0;border-radius:50%;color:#999;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;">6</div>
+              <div style="font-size:10px;color:#aaa;font-weight:600;">Fees</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="width:28px;height:28px;background:#e0e0e0;border-radius:50%;color:#999;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;">7</div>
+              <div style="font-size:10px;color:#aaa;font-weight:600;">Students</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="width:28px;height:28px;background:#e0e0e0;border-radius:50%;color:#999;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;">8</div>
+              <div style="font-size:10px;color:#aaa;font-weight:600;">Review</div>
+            </div>
+          </div>
+          <!-- Current step example -->
+          <div class="panel">
+            <div style="font-size:17px;font-weight:700;margin-bottom:16px;">Step 4 — Add Subjects</div>
+            <div class="form-row">
+              <div class="form-group" style="flex:2;">
+                <label class="form-label">Subject Name *</label>
+                <input class="form-input" value="Mathematics" readonly />
+              </div>
+              <div class="form-group" style="flex:1;">
+                <label class="form-label">Code</label>
+                <input class="form-input" value="MATH" readonly />
+              </div>
+            </div>
+            <button class="btn btn-primary btn-sm" style="margin-right:8px;">+ Add Subject</button>
+            <button class="btn btn-primary" style="float:right;">Next Step →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div><b>Step 1 — School Identity:</b> Enter the school name, address, motto, and upload a logo.</div></li>
+      <li><span class="num">2</span><div><b>Step 2 — Classes:</b> Add every class/grade level your school uses (e.g. Basic 1, JHS 1, Form 2).</div></li>
+      <li><span class="num">3</span><div><b>Step 3 — Academic Terms:</b> Define your term calendar (e.g. Term 1 — Sep to Dec).</div></li>
+      <li><span class="num">4</span><div><b>Step 4 — Subjects:</b> Add all subjects taught across the school.</div></li>
+      <li><span class="num">5</span><div><b>Step 5 — Staff:</b> Invite teachers and finance staff with their email and roles.</div></li>
+      <li><span class="num">6</span><div><b>Step 6 — Fee Structures:</b> Set up term fees per class.</div></li>
+      <li><span class="num">7</span><div><b>Step 7 — Students:</b> Bulk-enroll students or add them individually.</div></li>
+      <li><span class="num">8</span><div><b>Step 8 — Review &amp; Launch:</b> Confirm all data and go live.</div></li>
+    </ol>
+    <div class="tip success">Complete all 8 steps before going live. You can return and edit each step later from the Owner Dashboard.</div>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 3. STAFF DASHBOARD                                                -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="dashboard-staff">
+    <h2>3. Staff Dashboard</h2>
+    <p class="section-desc">
+      After login, teachers and other non-owner staff land on this dashboard. It shows key stats,
+      quick-action shortcuts, pending alerts for students needing remediation, and a list of
+      low-performing students.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/dashboard</div>
+      </div>
+      <div class="mockup-body">
+        <!-- Sidebar -->
+        <div class="app-sidebar">
+          <div class="brand">SchoolSaaS</div>
+          <div class="nav-item active"><span>🏠</span> Dashboard</div>
+          <div class="nav-item"><span>👤</span> Students</div>
+          <div class="nav-item"><span>✅</span> Attendance</div>
+          <div class="nav-item"><span>📝</span> Grades</div>
+          <div class="nav-item"><span>📊</span> Results</div>
+          <div class="nav-item"><span>📋</span> Reports</div>
+          <div class="nav-item"><span>📢</span> Announcements</div>
+          <div class="nav-item"><span>📨</span> Memos</div>
+        </div>
+        <!-- Content -->
+        <div class="app-content">
+          <div class="page-title">Welcome, Ms. Abena</div>
+
+          <!-- Stat cards -->
+          <div class="cards-row">
+            <div class="stat-card"><div class="label">Total Students</div><div class="value" style="color:#1a73e8;">142</div></div>
+            <div class="stat-card"><div class="label">Pending Alerts</div><div class="value" style="color:#e74c3c;">3</div></div>
+            <div class="stat-card"><div class="label">Low Performers</div><div class="value" style="color:#e67e22;">7</div><div style="font-size:10px;color:#aaa;margin-top:2px;">Needs attention</div></div>
+          </div>
+
+          <!-- Quick actions -->
+          <div class="panel">
+            <div class="panel-title">Quick Actions</div>
+            <div class="quick-grid" style="grid-template-columns:repeat(4,1fr);">
+              <div class="quick-card"><div class="icon">✅</div><div class="qlabel" style="color:#16a085;">Take Attendance</div><div class="qdesc">Mark today's attendance</div></div>
+              <div class="quick-card"><div class="icon">📝</div><div class="qlabel" style="color:#8e44ad;">Enter Grades</div><div class="qdesc">Enter subject scores</div></div>
+              <div class="quick-card"><div class="icon">📊</div><div class="qlabel" style="color:#2c3e50;">View Reports</div><div class="qdesc">Generate report cards</div></div>
+              <div class="quick-card"><div class="icon">📢</div><div class="qlabel" style="color:#e67e22;">Post Announcement</div><div class="qdesc">Notify staff or students</div></div>
+            </div>
+          </div>
+
+          <!-- Alerts + Attention -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="panel">
+              <div class="panel-title">Alerts</div>
+              <div style="font-size:13px;padding:6px 10px;background:#fdecea;border-radius:5px;border-left:3px solid #e74c3c;margin-bottom:6px;">
+                <b>Kofi Mensah</b> needs remediation<br/><span style="font-size:11px;color:#888;">Number Sense — low diagnostic</span>
+              </div>
+              <div style="font-size:13px;padding:6px 10px;background:#fff8e1;border-radius:5px;border-left:3px solid #f9a825;">
+                <b>Ama Asante</b> — in progress<br/><span style="font-size:11px;color:#888;">Reading Comprehension</span>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-title">Students Needing Attention</div>
+              <table class="data-table">
+                <thead><tr><th>Student</th><th>Competency</th><th>Level</th></tr></thead>
+                <tbody>
+                  <tr><td>K. Mensah</td><td>Number Sense</td><td><span class="badge badge-red">Low</span></td></tr>
+                  <tr><td>E. Ofori</td><td>Algebra</td><td><span class="badge badge-red">Low</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>The top row shows <b>Total Students</b>, <b>Pending Alerts</b> (students flagged for remediation), and <b>Low Performers</b>.</div></li>
+      <li><span class="num">2</span><div>Use <b>Quick Actions</b> to jump directly to the most common tasks without navigating the sidebar.</div></li>
+      <li><span class="num">3</span><div>The <b>Alerts</b> panel lists students with pending or in-progress remediation flags.</div></li>
+      <li><span class="num">4</span><div>The <b>Students Needing Attention</b> panel shows students with low diagnostic scores in specific competencies.</div></li>
+    </ol>
+    <div class="tip">Finance staff (Bursar / Accountant) also see a <b>Fees Collected</b> stat card and an <b>Outstanding Debtors</b> table at the bottom of the dashboard.</div>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 4. OWNER DASHBOARD                                                -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="dashboard-owner">
+    <h2>4. Owner Dashboard</h2>
+    <p class="section-desc">
+      The school owner sees a richer dashboard with 8 tabs: Overview, Users, Academics,
+      Administration, Finance, Store, Roles, and Audit. This is the control centre for the
+      entire school.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/dashboard</div>
+      </div>
+      <div class="mockup-body">
+        <div class="app-sidebar">
+          <div class="brand">SchoolSaaS</div>
+          <div class="nav-item active"><span>🏠</span> Dashboard</div>
+          <div class="nav-item"><span>👤</span> Students</div>
+          <div class="nav-item"><span>✅</span> Attendance</div>
+          <div class="nav-item"><span>📝</span> Grades</div>
+          <div class="nav-item"><span>💰</span> Fees</div>
+          <div class="nav-item"><span>👥</span> Users</div>
+          <div class="nav-item"><span>🏪</span> Store</div>
+        </div>
+        <div class="app-content">
+          <div class="page-title">School Dashboard</div>
+          <!-- Tab bar -->
+          <div class="tab-bar">
+            <div class="tab-item active">Overview</div>
+            <div class="tab-item">Users</div>
+            <div class="tab-item">Academics</div>
+            <div class="tab-item">Administration</div>
+            <div class="tab-item">Finance</div>
+            <div class="tab-item">Store</div>
+            <div class="tab-item">Roles</div>
+            <div class="tab-item">Audit</div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div style="font-size:12px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">QUICK ACTIONS</div>
+          <div class="quick-grid">
+            <div class="quick-card"><div class="icon">👤</div><div class="qlabel" style="color:#1a73e8;">Add Student</div><div class="qdesc">Enroll a new student</div></div>
+            <div class="quick-card"><div class="icon">💳</div><div class="qlabel" style="color:#27ae60;">Record Payment</div><div class="qdesc">Log a fee payment</div></div>
+            <div class="quick-card"><div class="icon">✅</div><div class="qlabel" style="color:#16a085;">Take Attendance</div><div class="qdesc">Mark today's attendance</div></div>
+            <div class="quick-card"><div class="icon">📝</div><div class="qlabel" style="color:#8e44ad;">Enter Grades</div><div class="qdesc">Enter subject scores</div></div>
+            <div class="quick-card"><div class="icon">📢</div><div class="qlabel" style="color:#e67e22;">Post Announcement</div><div class="qdesc">Notify staff or students</div></div>
+            <div class="quick-card"><div class="icon">📊</div><div class="qlabel" style="color:#2c3e50;">View Reports</div><div class="qdesc">Generate report cards</div></div>
+            <div class="quick-card"><div class="icon">👥</div><div class="qlabel" style="color:#7f8c8d;">Manage Users</div><div class="qdesc">Add or edit staff</div></div>
+            <div class="quick-card"><div class="icon">🍽</div><div class="qlabel" style="color:#d35400;">Feeding Records</div><div class="qdesc">Record daily meals</div></div>
+          </div>
+
+          <!-- At a glance -->
+          <div style="font-size:12px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">AT A GLANCE</div>
+          <div class="cards-row">
+            <div class="stat-card"><div class="label">Total Students</div><div class="value" style="color:#1a73e8;">142</div></div>
+            <div class="stat-card"><div class="label">Total Staff</div><div class="value" style="color:#8e44ad;">14</div></div>
+            <div class="stat-card"><div class="label">Fees Collected</div><div class="value" style="color:#27ae60;font-size:18px;">GH₵ 24,500</div></div>
+            <div class="stat-card"><div class="label">Pending Flags</div><div class="value" style="color:#e67e22;">3</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>The <b>Overview tab</b> shows Quick Actions plus a full at-a-glance summary (students, staff, fees collected, pending flags).</div></li>
+      <li><span class="num">2</span><div>The <b>Users tab</b> lets you add, edit, or deactivate staff accounts without navigating to the Users page.</div></li>
+      <li><span class="num">3</span><div>The <b>Academics tab</b> manages classifications, class lists, and teacher-subject-class assignments.</div></li>
+      <li><span class="num">4</span><div>The <b>Administration tab</b> manages departments and lets you move students between classes.</div></li>
+      <li><span class="num">5</span><div>The <b>Finance tab</b> shows a full payments summary, defaulters, and fee structures.</div></li>
+      <li><span class="num">6</span><div>The <b>Store tab</b> manages school inventory items and transaction records.</div></li>
+      <li><span class="num">7</span><div>The <b>Roles tab</b> lets you create custom roles with fine-grained privileges.</div></li>
+      <li><span class="num">8</span><div>The <b>Audit tab</b> shows a filterable log of every action taken by every staff member.</div></li>
+    </ol>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 5. STUDENTS                                                       -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="students">
+    <h2>5. Student List</h2>
+    <p class="section-desc">
+      The Students page lists all enrolled students. You can search, filter by class, add new
+      students, edit records, and click any row to open a student's full profile.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/students</div>
+      </div>
+      <div class="mockup-body">
+        <div class="app-sidebar">
+          <div class="brand">SchoolSaaS</div>
+          <div class="nav-item"><span>🏠</span> Dashboard</div>
+          <div class="nav-item active"><span>👤</span> Students</div>
+          <div class="nav-item"><span>✅</span> Attendance</div>
+          <div class="nav-item"><span>📝</span> Grades</div>
+        </div>
+        <div class="app-content">
+          <!-- Header -->
+          <div class="page-header">
+            <div>
+              <div class="page-title" style="margin-bottom:2px;">Students</div>
+              <div style="font-size:12px;color:#888;">142 total</div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <select class="form-select">
+                <option>All Classes</option>
+                <option>Basic 4</option>
+                <option>Basic 5</option>
+              </select>
+              <button class="btn btn-primary">+ Add Student</button>
+            </div>
+          </div>
+
+          <!-- Search -->
+          <input class="form-input" style="width:260px;margin-bottom:14px;" placeholder="Search by name or code…" readonly />
+
+          <!-- Add Student Form (expanded) -->
+          <div class="panel" style="margin-bottom:16px;border:1px solid #e8f0fe;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <div style="font-weight:700;font-size:14px;">Add Student</div>
+              <button class="btn btn-sm btn-secondary">Cancel</button>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" value="Kwame Boateng" readonly /></div>
+              <div class="form-group"><label class="form-label">Student Code</label><input class="form-input" value="STU-045" readonly /></div>
+              <div class="form-group"><label class="form-label">Class</label><select class="form-select"><option>Basic 5</option></select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Date of Birth</label><input class="form-input" value="2015-03-12" readonly /></div>
+              <div class="form-group"><label class="form-label">Gender</label><select class="form-select"><option>Male</option></select></div>
+              <div class="form-group"><label class="form-label">Parent Name</label><input class="form-input" value="Nana Boateng" readonly /></div>
+              <div class="form-group"><label class="form-label">Parent Phone</label><input class="form-input" value="0244-123456" readonly /></div>
+            </div>
+            <button class="btn btn-primary">Save</button>
+          </div>
+
+          <!-- Table -->
+          <table class="data-table">
+            <thead><tr><th>Code</th><th>Name</th><th>Class</th><th>Gender</th><th>Parent</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td>STU-001</td><td style="font-weight:500;">Ama Asante</td><td>Basic 5</td><td>Female</td><td>Kweku Asante</td><td><span class="badge badge-green">active</span></td><td><button class="btn btn-sm btn-secondary">Edit</button></td></tr>
+              <tr><td>STU-002</td><td style="font-weight:500;">Kofi Mensah</td><td>Basic 5</td><td>Male</td><td>Yaw Mensah</td><td><span class="badge badge-green">active</span></td><td><button class="btn btn-sm btn-secondary">Edit</button></td></tr>
+              <tr><td>STU-003</td><td style="font-weight:500;">Efua Ofori</td><td>JHS 1</td><td>Female</td><td>Adwoa Ofori</td><td><span class="badge badge-red">inactive</span></td><td><button class="btn btn-sm btn-secondary">Edit</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>Use the <b>class filter</b> (top-right dropdown) to narrow the list to one class.</div></li>
+      <li><span class="num">2</span><div>Use the <b>search box</b> to find a student by name or student code.</div></li>
+      <li><span class="num">3</span><div>Click <b>+ Add Student</b> to expand the enrollment form. Fill in name, code, class, date of birth, gender, and parent details, then click <b>Save</b>.</div></li>
+      <li><span class="num">4</span><div>Click <b>Edit</b> on any row to update a student's details.</div></li>
+      <li><span class="num">5</span><div>Click anywhere on a student row (except the action buttons) to open the full student profile.</div></li>
+    </ol>
+    <div class="tip">Only <b>Owner</b> and <b>Teacher</b> roles can add or edit students. The owner can also deactivate a student — deactivated students are hidden from daily operations.</div>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 6. STUDENT PROFILE                                               -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="student-profile">
+    <h2>6. Student Profile</h2>
+    <p class="section-desc">
+      Clicking a student row opens their individual profile page — a comprehensive view of their
+      grades, attendance history, assessments, and risk intelligence summary.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/students/abc-123</div>
+      </div>
+      <div class="mockup-body">
+        <div class="app-sidebar">
+          <div class="brand">SchoolSaaS</div>
+          <div class="nav-item"><span>🏠</span> Dashboard</div>
+          <div class="nav-item active"><span>👤</span> Students</div>
+        </div>
+        <div class="app-content">
+          <!-- Back button -->
+          <button class="btn btn-sm btn-secondary" style="margin-bottom:16px;">← Back to Students</button>
+
+          <!-- Student header -->
+          <div class="panel" style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px;">
+            <div style="width:56px;height:56px;background:#1a73e8;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:800;flex-shrink:0;">K</div>
+            <div style="flex:1;">
+              <div style="font-size:20px;font-weight:800;color:#1a2336;">Kofi Mensah</div>
+              <div style="font-size:13px;color:#666;margin-top:3px;">Basic 5 &nbsp;·&nbsp; STU-002 &nbsp;·&nbsp; Male &nbsp;·&nbsp; DOB: 12 Mar 2015</div>
+              <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+                <span class="badge badge-green">Active</span>
+                <span class="badge badge-orange">Risk: Medium</span>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:11px;color:#888;">Parent: Yaw Mensah</div>
+              <div style="font-size:11px;color:#888;">0244-654321</div>
+            </div>
+          </div>
+
+          <!-- Mini stats -->
+          <div class="cards-row" style="margin-bottom:16px;">
+            <div class="stat-card"><div class="label">Attendance Rate</div><div class="value" style="color:#27ae60;font-size:22px;">87%</div></div>
+            <div class="stat-card"><div class="label">Avg Score</div><div class="value" style="color:#e67e22;font-size:22px;">61%</div></div>
+            <div class="stat-card"><div class="label">Weak Competencies</div><div class="value" style="color:#e74c3c;font-size:22px;">2</div></div>
+          </div>
+
+          <!-- Grades tab -->
+          <div class="tab-bar">
+            <div class="tab-item active">Grades</div>
+            <div class="tab-item">Attendance</div>
+            <div class="tab-item">Assessments</div>
+            <div class="tab-item">Intelligence</div>
+          </div>
+          <table class="data-table">
+            <thead><tr><th>Subject</th><th>Class Assign.</th><th>Test</th><th>Exam</th><th>Total</th><th>Grade</th></tr></thead>
+            <tbody>
+              <tr><td>Mathematics</td><td>22</td><td>18</td><td>28</td><td style="font-weight:700;color:#e67e22;">68</td><td><span class="badge badge-orange">Average</span></td></tr>
+              <tr><td>English</td><td>25</td><td>22</td><td>32</td><td style="font-weight:700;color:#27ae60;">79</td><td><span class="badge badge-green">Strong</span></td></tr>
+              <tr><td>Science</td><td>14</td><td>11</td><td>18</td><td style="font-weight:700;color:#e74c3c;">43</td><td><span class="badge badge-red">Weak</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>Click any student row on the Students page to open their profile.</div></li>
+      <li><span class="num">2</span><div>The header shows the student's name, class, student code, and risk level badge.</div></li>
+      <li><span class="num">3</span><div>Mini stats at the top show attendance rate, average score, and the number of weak competencies.</div></li>
+      <li><span class="num">4</span><div>Use the <b>Grades</b>, <b>Attendance</b>, <b>Assessments</b>, and <b>Intelligence</b> tabs to explore each area.</div></li>
+      <li><span class="num">5</span><div>Click <b>← Back to Students</b> to return to the list.</div></li>
+    </ol>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 7. ATTENDANCE                                                     -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="attendance">
+    <h2>7. Taking Attendance</h2>
+    <p class="section-desc">
+      Attendance is recorded class-by-class. Select a class and date, then mark each student as
+      Present, Absent, Late, or Excused. You can also bulk-mark the whole class at once.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/attendance</div>
+      </div>
+      <div class="mockup-body">
+        <div class="app-sidebar">
+          <div class="brand">SchoolSaaS</div>
+          <div class="nav-item"><span>🏠</span> Dashboard</div>
+          <div class="nav-item"><span>👤</span> Students</div>
+          <div class="nav-item active"><span>✅</span> Attendance</div>
+        </div>
+        <div class="app-content">
+          <div class="page-title">Attendance</div>
+
+          <!-- Filters -->
+          <div style="display:flex;gap:14px;margin-bottom:18px;flex-wrap:wrap;align-items:flex-end;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Class</label>
+              <select class="form-select"><option>Basic 5</option></select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Date</label>
+              <input class="form-input" style="width:150px;" value="2026-05-07" readonly />
+            </div>
+          </div>
+
+          <!-- Summary badges -->
+          <div style="display:flex;gap:10px;margin-bottom:14px;">
+            <span class="badge" style="background:#e8f5e920;color:#27ae60;border:1px solid #27ae6040;padding:4px 12px;font-size:12px;">present: 20</span>
+            <span class="badge" style="background:#fdecea20;color:#e74c3c;border:1px solid #e74c3c40;padding:4px 12px;font-size:12px;">absent: 2</span>
+            <span class="badge" style="background:#fff3e020;color:#e67e22;border:1px solid #e67e2240;padding:4px 12px;font-size:12px;">late: 1</span>
+            <span class="badge" style="background:#e8f0fe20;color:#1a73e8;border:1px solid #1a73e840;padding:4px 12px;font-size:12px;">excused: 0</span>
+          </div>
+
+          <!-- Mark all row -->
+          <div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;">
+            <span style="font-size:13px;color:#666;">Mark all:</span>
+            <button class="status-btn" style="border-color:#27ae60;color:#27ae60;background:#e8f5e9;">present</button>
+            <button class="status-btn" style="border-color:#e74c3c;color:#e74c3c;background:#fdecea;">absent</button>
+            <button class="status-btn" style="border-color:#e67e22;color:#e67e22;background:#fff3e0;">late</button>
+            <button class="status-btn" style="border-color:#1a73e8;color:#1a73e8;background:#e8f0fe;">excused</button>
+          </div>
+
+          <!-- Table -->
+          <table class="data-table">
+            <thead><tr><th>#</th><th>Student</th><th>Code</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="color:#888;">1</td>
+                <td style="font-weight:500;">Ama Asante</td><td style="color:#888;">STU-001</td>
+                <td>
+                  <button class="status-btn" style="border-color:#27ae60;color:#27ae60;background:#e8f5e9;margin-right:4px;">present</button>
+                  <button class="status-btn" style="border-color:#ddd;color:#bbb;background:transparent;margin-right:4px;">absent</button>
+                  <button class="status-btn" style="border-color:#ddd;color:#bbb;background:transparent;margin-right:4px;">late</button>
+                  <button class="status-btn" style="border-color:#ddd;color:#bbb;background:transparent;">excused</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="color:#888;">2</td>
+                <td style="font-weight:500;">Kofi Mensah</td><td style="color:#888;">STU-002</td>
+                <td>
+                  <button class="status-btn" style="border-color:#ddd;color:#bbb;background:transparent;margin-right:4px;">present</button>
+                  <button class="status-btn" style="border-color:#e74c3c;color:#e74c3c;background:#fdecea;margin-right:4px;">absent</button>
+                  <button class="status-btn" style="border-color:#ddd;color:#bbb;background:transparent;margin-right:4px;">late</button>
+                  <button class="status-btn" style="border-color:#ddd;color:#bbb;background:transparent;">excused</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top:16px;">
+            <button class="btn btn-primary">Save Attendance</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>Select the <b>Class</b> from the dropdown. The student list loads automatically.</div></li>
+      <li><span class="num">2</span><div>The <b>Date</b> defaults to today. Change it to record attendance for a past or future date.</div></li>
+      <li><span class="num">3</span><div>For each student, click the appropriate status button: <b>present</b>, <b>absent</b>, <b>late</b>, or <b>excused</b>. The selected button is highlighted.</div></li>
+      <li><span class="num">4</span><div>Use <b>Mark all</b> buttons to set every student to the same status in one click, then adjust exceptions individually.</div></li>
+      <li><span class="num">5</span><div>Click <b>Save Attendance</b>. A green success message confirms the save.</div></li>
+    </ol>
+    <div class="tip success">If attendance was already recorded for this date, the page shows a blue notice and the button changes to <b>Update Attendance</b>. You can safely overwrite it.</div>
+    <div class="tip">Roles that can record attendance: Owner, Teacher, Class Teacher, Headmaster (Academics), Headmaster (Admin). Other roles can view but not edit.</div>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 8. GRADES                                                         -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="grades">
+    <h2>8. Entering Grades</h2>
+    <p class="section-desc">
+      The Grades page lets teachers enter scores for a class-subject-term combination.
+      There are three score columns per student: Class Assignment (/30), Test Score (/30),
+      and Exam Score (/40), totalling 100.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/grades</div>
+      </div>
+      <div class="mockup-body">
+        <div class="app-sidebar">
+          <div class="brand">SchoolSaaS</div>
+          <div class="nav-item"><span>🏠</span> Dashboard</div>
+          <div class="nav-item"><span>👤</span> Students</div>
+          <div class="nav-item active"><span>📝</span> Grades</div>
+        </div>
+        <div class="app-content">
+          <div class="page-title">Grades</div>
+
+          <div style="display:flex;gap:14px;margin-bottom:20px;flex-wrap:wrap;align-items:flex-end;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Class</label>
+              <select class="form-select"><option>Basic 5</option></select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Subject</label>
+              <select class="form-select"><option>Mathematics</option></select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Term</label>
+              <select class="form-select"><option>Term 1 2026 (current)</option></select>
+            </div>
+          </div>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Student</th><th>Code</th>
+                <th>Class Assign. (/30)</th>
+                <th>Test Score (/30)</th>
+                <th>Exam Score (/40)</th>
+                <th>Total (/100)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:500;">Ama Asante</td><td style="color:#888;font-size:12px;">STU-001</td>
+                <td><input class="score-input" value="24" readonly /></td>
+                <td><input class="score-input" value="22" readonly /></td>
+                <td><input class="score-input" value="34" readonly /></td>
+                <td><strong style="color:#27ae60;">80.0</strong></td>
+              </tr>
+              <tr>
+                <td style="font-weight:500;">Kofi Mensah</td><td style="color:#888;font-size:12px;">STU-002</td>
+                <td><input class="score-input" value="18" readonly /></td>
+                <td><input class="score-input" value="16" readonly /></td>
+                <td><input class="score-input" value="24" readonly /></td>
+                <td><strong style="color:#e67e22;">58.0</strong></td>
+              </tr>
+              <tr>
+                <td style="font-weight:500;">Efua Ofori</td><td style="color:#888;font-size:12px;">STU-003</td>
+                <td><input class="score-input" value="12" readonly /></td>
+                <td><input class="score-input" value="10" readonly /></td>
+                <td><input class="score-input" value="18" readonly /></td>
+                <td><strong style="color:#e74c3c;">40.0</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <button class="btn btn-primary" style="margin-top:16px;">Save All Grades</button>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>Select a <b>Class</b>, <b>Subject</b>, and <b>Term</b> from the dropdowns. The student roster loads automatically.</div></li>
+      <li><span class="num">2</span><div>For each student, type scores in the three input boxes: <b>Class Assignment</b> (max 30), <b>Test Score</b> (max 30), and <b>Exam Score</b> (max 40).</div></li>
+      <li><span class="num">3</span><div>The <b>Total</b> column updates live as you type, coloured green (≥75), orange (50–74), or red (&lt;50).</div></li>
+      <li><span class="num">4</span><div>When you are done, click <b>Save All Grades</b> to save all rows in one request.</div></li>
+    </ol>
+    <div class="tip">Leaving a score box empty saves it as null — the student's total will only count non-empty values. A zero is different from an empty field.</div>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 9. RESULTS & REPORTS                                              -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="results">
+    <h2>9. Generating Reports &amp; Report Cards</h2>
+    <p class="section-desc">
+      The Reports page generates individual student report cards or a full class summary.
+      Report cards can be printed or shared via WhatsApp directly from the screen.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/reports</div>
+      </div>
+      <div class="mockup-body">
+        <div class="app-sidebar">
+          <div class="brand">SchoolSaaS</div>
+          <div class="nav-item"><span>🏠</span> Dashboard</div>
+          <div class="nav-item active"><span>📋</span> Reports</div>
+        </div>
+        <div class="app-content">
+          <div class="page-title">Reports</div>
+
+          <!-- Mode selector + filters -->
+          <div class="panel" style="margin-bottom:20px;">
+            <div style="display:flex;gap:10px;margin-bottom:14px;">
+              <button style="padding:8px 20px;border-radius:20px;font-weight:600;font-size:13px;border:none;background:#1a73e8;color:#fff;cursor:pointer;">Student Report Card</button>
+              <button style="padding:8px 20px;border-radius:20px;font-weight:600;font-size:13px;border:none;background:#f0f0f0;color:#555;cursor:pointer;">Class Summary</button>
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Term *</label><select class="form-select"><option>Term 1 2026 (current)</option></select></div>
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Class</label><select class="form-select"><option>Basic 5</option></select></div>
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Student *</label><select class="form-select"><option>Ama Asante</option></select></div>
+              <button class="btn btn-primary">Generate</button>
+              <button class="btn btn-secondary">Print / PDF</button>
+              <button class="btn btn-wa">WhatsApp</button>
+            </div>
+          </div>
+
+          <!-- Report card result -->
+          <div class="panel">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;">
+              <div>
+                <div style="font-size:20px;font-weight:700;">Ama Asante</div>
+                <div style="font-size:13px;color:#666;margin-top:2px;">Basic 5 · Term 1 2026</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:26px;font-weight:800;color:#27ae60;">82%</div>
+                <div style="font-size:12px;color:#888;">strong · 5 subjects</div>
+              </div>
+            </div>
+            <table class="data-table">
+              <thead><tr><th>Subject</th><th>Total</th><th>Max</th><th>%</th><th>Grade</th></tr></thead>
+              <tbody>
+                <tr><td style="font-weight:500;">Mathematics</td><td style="font-weight:600;">80</td><td>100</td><td style="font-weight:700;color:#27ae60;">80%</td><td><span class="badge badge-green">Strong</span></td></tr>
+                <tr><td style="font-weight:500;">English</td><td style="font-weight:600;">85</td><td>100</td><td style="font-weight:700;color:#27ae60;">85%</td><td><span class="badge badge-green">Strong</span></td></tr>
+                <tr><td style="font-weight:500;">Science</td><td style="font-weight:600;">62</td><td>100</td><td style="font-weight:700;color:#e67e22;">62%</td><td><span class="badge badge-orange">Average</span></td></tr>
+              </tbody>
+            </table>
+            <div style="display:flex;gap:12px;margin-top:14px;">
+              <div style="padding:8px 20px;border-radius:8px;background:#e8f5e9;text-align:center;"><div style="font-size:22px;font-weight:800;color:#27ae60;">3</div><div style="font-size:11px;color:#666;">Strong</div></div>
+              <div style="padding:8px 20px;border-radius:8px;background:#fff3e0;text-align:center;"><div style="font-size:22px;font-weight:800;color:#e67e22;">2</div><div style="font-size:11px;color:#666;">Average</div></div>
+              <div style="padding:8px 20px;border-radius:8px;background:#fdecea;text-align:center;"><div style="font-size:22px;font-weight:800;color:#e74c3c;">0</div><div style="font-size:11px;color:#666;">Weak</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>Choose mode: <b>Student Report Card</b> for one student, or <b>Class Summary</b> for a whole-class overview.</div></li>
+      <li><span class="num">2</span><div>Select the <b>Term</b> (defaults to current term), the <b>Class</b>, and the <b>Student</b>.</div></li>
+      <li><span class="num">3</span><div>Click <b>Generate</b>. The report card appears below showing scores per subject with grade bands (Strong / Average / Weak).</div></li>
+      <li><span class="num">4</span><div>Click <b>Print / PDF</b> to open a print-ready version in a new tab. Use your browser's print dialog to save as PDF.</div></li>
+      <li><span class="num">5</span><div>Click <b>WhatsApp</b> to compose a formatted text message with the student's results, ready to send to the parent.</div></li>
+    </ol>
+    <div class="tip">The report card also shows an <b>Intelligence Insights</b> section — risk level, attendance rate, weak competencies, key concerns, and recommended actions (requires grades and attendance data to be recorded first).</div>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 10. FEES & PAYMENTS                                               -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="fees">
+    <h2>10. Recording Fee Payments</h2>
+    <p class="section-desc">
+      The Fees &amp; Payments page is used by Bursars, Accountants, and Owners to record payments
+      made by students or families. All payments are logged with a date, method, and optional
+      receipt number.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/fees</div>
+      </div>
+      <div class="mockup-body">
+        <div class="app-sidebar">
+          <div class="brand">SchoolSaaS</div>
+          <div class="nav-item"><span>🏠</span> Dashboard</div>
+          <div class="nav-item active"><span>💰</span> Fees</div>
+        </div>
+        <div class="app-content">
+          <!-- Header -->
+          <div class="page-header">
+            <div>
+              <div class="page-title" style="margin-bottom:4px;">Fees &amp; Payments</div>
+              <div style="font-size:13px;color:#555;">Total collected: <strong style="color:#27ae60;">GH₵ 24,500.00</strong></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <input class="form-input" style="width:180px;" placeholder="Search student or ref…" readonly />
+              <button class="btn btn-primary">+ Record Payment</button>
+            </div>
+          </div>
+
+          <!-- Record form -->
+          <div class="panel" style="margin-bottom:16px;border:1px solid #e8f0fe;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <div style="font-weight:700;font-size:14px;">Record Payment</div>
+              <button class="btn btn-sm btn-secondary">Cancel</button>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Student *</label>
+                <select class="form-select"><option>Kofi Mensah</option></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Fee Structure</label>
+                <select class="form-select"><option>Term 1 — Basic 5 (GH₵650.00)</option></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Amount (GH₵) *</label>
+                <input class="form-input" value="650.00" readonly />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Payment Date *</label>
+                <input class="form-input" value="2026-05-07" readonly />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Method</label>
+                <select class="form-select"><option>Mobile Money</option></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Receipt #</label>
+                <input class="form-input" value="REC-047" readonly />
+              </div>
+            </div>
+            <button class="btn btn-success">Record Payment</button>
+          </div>
+
+          <!-- Payments table -->
+          <table class="data-table">
+            <thead><tr><th>Student</th><th>Amount</th><th>Date</th><th>Method</th><th>Receipt #</th><th>Fee Structure</th></tr></thead>
+            <tbody>
+              <tr><td>Ama Asante</td><td style="font-weight:600;color:#27ae60;">GH₵650.00</td><td>07/05/2026</td><td>Cash</td><td>REC-045</td><td>Term 1 — Basic 5</td></tr>
+              <tr><td>Efua Ofori</td><td style="font-weight:600;color:#27ae60;">GH₵400.00</td><td>03/05/2026</td><td>Mobile Money</td><td>REC-044</td><td>Term 1 — JHS 1</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>Click <b>+ Record Payment</b> to expand the payment form.</div></li>
+      <li><span class="num">2</span><div>Select the <b>Student</b> who is paying. Optionally select a <b>Fee Structure</b> to associate the payment.</div></li>
+      <li><span class="num">3</span><div>Enter the <b>Amount</b>, confirm the <b>Payment Date</b> (defaults to today), select the payment <b>Method</b> (cash, mobile money, bank transfer, cheque), and optionally add a <b>Receipt Number</b>.</div></li>
+      <li><span class="num">4</span><div>Click <b>Record Payment</b>. The payment appears immediately in the table below.</div></li>
+      <li><span class="num">5</span><div>Use the search box to filter payments by student name or receipt reference.</div></li>
+    </ol>
+    <div class="tip warn">Only users with the <b>Finance Write</b> privilege (Owner, Bursar, Accountant, Headmaster Admin) can record payments. Others can only view the table.</div>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 11. FEE STRUCTURES                                                -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="fee-structures">
+    <h2>11. Managing Fee Structures</h2>
+    <p class="section-desc">
+      Fee Structures define what each class owes per term. They are set up by the owner and
+      referenced when recording payments.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/fee-structures</div>
+      </div>
+      <div class="app-content" style="background:#f4f6fb;padding:20px 24px;">
+        <div class="page-header">
+          <div class="page-title">Fee Structures</div>
+          <button class="btn btn-primary">+ New Fee Structure</button>
+        </div>
+        <table class="data-table" style="background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+          <thead><tr><th>Label</th><th>Class</th><th>Term</th><th>Total Amount</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600;">Term 1 — Basic 5</td><td>Basic 5</td><td>Term 1 2026</td><td style="font-weight:700;color:#27ae60;">GH₵650.00</td><td><button class="btn btn-sm btn-secondary">Edit</button></td></tr>
+            <tr><td style="font-weight:600;">Term 1 — JHS 1</td><td>JHS 1</td><td>Term 1 2026</td><td style="font-weight:700;color:#27ae60;">GH₵800.00</td><td><button class="btn btn-sm btn-secondary">Edit</button></td></tr>
+            <tr><td style="font-weight:600;">Term 1 — Basic 4</td><td>Basic 4</td><td>Term 1 2026</td><td style="font-weight:700;color:#27ae60;">GH₵600.00</td><td><button class="btn btn-sm btn-secondary">Edit</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>Navigate to <b>Fee Structures</b> in the sidebar.</div></li>
+      <li><span class="num">2</span><div>Click <b>+ New Fee Structure</b> to create one. Give it a label (e.g. "Term 1 — Basic 5"), select the class and term, and enter the total amount.</div></li>
+      <li><span class="num">3</span><div>You can add multiple fee types within a structure (tuition, books, uniform, etc.).</div></li>
+      <li><span class="num">4</span><div>Once created, the structure appears in the payment form dropdown so bursars can easily reference it.</div></li>
+    </ol>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 12. ANNOUNCEMENTS                                                  -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="announcements">
+    <h2>12. Posting &amp; Reading Announcements</h2>
+    <p class="section-desc">
+      Announcements are broadcast notices posted to specific audiences: all staff, teachers only,
+      heads and leaders, or for students. Anyone in the audience can read them; only authorised
+      roles can post.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/announcements</div>
+      </div>
+      <div class="mockup-body">
+        <div class="app-sidebar">
+          <div class="brand">SchoolSaaS</div>
+          <div class="nav-item"><span>🏠</span> Dashboard</div>
+          <div class="nav-item active"><span>📢</span> Announcements</div>
+        </div>
+        <div class="app-content">
+          <div class="page-header">
+            <div class="page-title">Announcements</div>
+            <button class="btn btn-primary">+ Post Announcement</button>
+          </div>
+
+          <!-- Compose form -->
+          <div class="panel" style="margin-bottom:20px;border:1px solid #e8f0fe;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+              <div style="font-weight:700;font-size:14px;">New Announcement</div>
+              <button class="btn btn-sm btn-secondary">Cancel</button>
+            </div>
+            <div class="form-group"><label class="form-label">Title *</label><input class="form-input" value="Staff Meeting — Friday 3PM" readonly /></div>
+            <div class="form-group"><label class="form-label">Body</label><textarea style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:13px;height:70px;resize:none;" readonly>All staff are required to attend the end-of-term review meeting on Friday at 3PM in the main hall.</textarea></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div class="form-group"><label class="form-label">Audience</label><select class="form-select"><option>All Staff</option><option>Teachers</option><option>Heads / Leaders</option><option>For Students</option></select></div>
+              <div class="form-group"><label class="form-label">Expires (optional)</label><input class="form-input" value="2026-05-10" readonly /></div>
+            </div>
+            <button class="btn btn-primary">Post</button>
+          </div>
+
+          <!-- Announcement list -->
+          <div class="ann-card" style="border-left-color:#1a73e8;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;">
+              <span class="ann-title">Staff Meeting — Friday 3PM</span>
+              <span class="badge badge-blue">All Staff</span>
+            </div>
+            <p class="ann-body">All staff are required to attend the end-of-term review meeting on Friday at 3PM in the main hall.</p>
+            <div class="ann-meta">Posted by Principal Kofi · 07/05/2026 · Expires 10/05/2026</div>
+          </div>
+          <div class="ann-card" style="border-left-color:#27ae60;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+              <span class="ann-title">Midterm Exam Timetable Released</span>
+              <span class="badge badge-green">For Students</span>
+            </div>
+            <p class="ann-body">The midterm examination timetable has been published. Please collect printed copies from the head's office.</p>
+            <div class="ann-meta">Posted by Ms. Abena · 04/05/2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>Click <b>+ Post Announcement</b> to open the compose form.</div></li>
+      <li><span class="num">2</span><div>Enter a <b>Title</b> and optional body text.</div></li>
+      <li><span class="num">3</span><div>Choose the <b>Audience</b>: All Staff, Staff Only, Teachers, Heads / Leaders, or For Students. Your role limits which audiences you can post to.</div></li>
+      <li><span class="num">4</span><div>Optionally set an <b>Expiry Date</b> — the announcement dims and shows "Expired" after that date.</div></li>
+      <li><span class="num">5</span><div>Click <b>Post</b>. The announcement appears at the top of the list for all users in the audience.</div></li>
+      <li><span class="num">6</span><div>Owners can also <b>Archive</b> or <b>Delete</b> any announcement using the buttons on its card.</div></li>
+    </ol>
+    <div class="tip">Roles that can post: Owner, Headmaster (Academics &amp; Admin), Department Head (to teachers only), Teacher and Class Teacher (to students only).</div>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 13. MEMOS                                                          -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="memos">
+    <h2>13. Sending &amp; Reading Memos</h2>
+    <p class="section-desc">
+      Memos are private one-to-one internal messages between staff members. Unlike announcements,
+      they are not broadcast — only the sender and recipient (and any CC'd staff) can see them.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/memos</div>
+      </div>
+      <div class="mockup-body">
+        <div class="app-sidebar">
+          <div class="brand">SchoolSaaS</div>
+          <div class="nav-item active"><span>📨</span> Memos</div>
+        </div>
+        <div class="app-content">
+          <div class="page-title">Memos</div>
+
+          <!-- Tab bar -->
+          <div style="display:flex;border-bottom:2px solid #e0e0e0;margin-bottom:20px;">
+            <button style="padding:8px 22px;border:none;background:none;cursor:pointer;font-weight:700;font-size:14px;color:#1a73e8;border-bottom:2px solid #1a73e8;margin-bottom:-2px;">Inbox <span style="margin-left:7px;background:#e74c3c;color:#fff;border-radius:10px;padding:1px 7px;font-size:11px;">2</span></button>
+            <button style="padding:8px 22px;border:none;background:none;cursor:pointer;font-weight:400;font-size:14px;color:#555;border-bottom:2px solid transparent;margin-bottom:-2px;">Sent</button>
+            <button style="padding:8px 22px;border:none;background:none;cursor:pointer;font-weight:400;font-size:14px;color:#555;border-bottom:2px solid transparent;margin-bottom:-2px;">Compose</button>
+          </div>
+
+          <!-- Inbox items -->
+          <div class="memo-item" style="border-left-color:#1a73e8;">
+            <div>
+              <div style="font-weight:700;font-size:14px;">Exam Results Review</div>
+              <div style="font-size:12px;color:#888;margin-top:2px;">From: Principal Kofi</div>
+            </div>
+            <div style="font-size:11px;color:#aaa;">06/05/2026</div>
+          </div>
+          <div class="memo-item" style="border-left-color:#1a73e8;">
+            <div>
+              <div style="font-weight:700;font-size:14px;">Timetable Update</div>
+              <div style="font-size:12px;color:#888;margin-top:2px;">From: Ms. Boateng <span style="margin-left:8px;color:#8e44ad;font-weight:600;">CC</span></div>
+            </div>
+            <div style="font-size:11px;color:#aaa;">04/05/2026</div>
+          </div>
+          <div class="memo-item" style="border-left-color:#ddd;opacity:0.7;">
+            <div>
+              <div style="font-weight:400;font-size:14px;">Sports Day Arrangements</div>
+              <div style="font-size:12px;color:#888;margin-top:2px;">From: Mr. Acheampong</div>
+            </div>
+            <div style="font-size:11px;color:#aaa;">01/05/2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>The <b>Inbox tab</b> shows all memos sent to you. Unread memos have a blue left border and bold text; read memos have a grey border and normal weight.</div></li>
+      <li><span class="num">2</span><div>A red badge on the Inbox tab shows the number of unread memos.</div></li>
+      <li><span class="num">3</span><div>Click a memo to open and read it. It is automatically marked as read.</div></li>
+      <li><span class="num">4</span><div>The <b>Sent tab</b> shows memos you have sent, with a green tick when the recipient has read them.</div></li>
+      <li><span class="num">5</span><div>Click the <b>Compose tab</b> to write a new memo. Select the <b>To</b> recipient, optional <b>CC</b> staff (checkboxes), a <b>Subject</b>, and a <b>Body</b>, then click <b>Send Memo</b>.</div></li>
+    </ol>
+    <div class="tip">CC'd recipients can read the memo but it shows a purple "CC" tag on the item so they know it wasn't sent directly to them.</div>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 14. MANAGE USERS (STAFF)                                          -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="users">
+    <h2>14. Managing Staff Users</h2>
+    <p class="section-desc">
+      The Users page (accessible from the sidebar) lets the owner or headmaster add new staff
+      accounts, edit existing ones, and deactivate those who have left.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/users</div>
+      </div>
+      <div class="app-content" style="background:#f4f6fb;padding:20px 24px;">
+        <div class="page-header">
+          <div class="page-title">Staff Users</div>
+          <div style="display:flex;gap:10px;">
+            <select class="form-select"><option>All Roles</option><option>Teacher</option><option>Bursar</option></select>
+            <button class="btn btn-primary">+ Add User</button>
+          </div>
+        </div>
+
+        <!-- Add user form -->
+        <div class="panel" style="margin-bottom:16px;border:1px solid #e8f0fe;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+            <div style="font-weight:700;font-size:14px;">New User</div>
+            <button class="btn btn-sm btn-secondary">Cancel</button>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Name *</label><input class="form-input" value="Akua Boateng" readonly /></div>
+            <div class="form-group"><label class="form-label">Email *</label><input class="form-input" value="akua.boateng@bf.edu" readonly /></div>
+            <div class="form-group"><label class="form-label">Password *</label><input class="form-input" type="password" value="••••••••" readonly /></div>
+            <div class="form-group"><label class="form-label">Role *</label><select class="form-select"><option>Teacher</option><option>Bursar</option><option>Headmaster (Academics)</option></select></div>
+          </div>
+          <button class="btn btn-primary">Save</button>
+        </div>
+
+        <table class="data-table" style="background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+          <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:500;">Abena Asare</td><td>abena@bf.edu</td><td>Teacher</td><td><span style="color:#27ae60;font-weight:500;">Active</span></td><td><button class="btn btn-sm btn-secondary" style="margin-right:6px;">Edit</button><button class="btn btn-sm btn-danger">Deactivate</button></td></tr>
+            <tr><td style="font-weight:500;">Kweku Boateng</td><td>kweku@bf.edu</td><td>Bursar</td><td><span style="color:#27ae60;font-weight:500;">Active</span></td><td><button class="btn btn-sm btn-secondary" style="margin-right:6px;">Edit</button><button class="btn btn-sm btn-danger">Deactivate</button></td></tr>
+            <tr><td style="font-weight:500;">Yaa Amponsah</td><td>yaa@bf.edu</td><td>Teacher</td><td><span style="color:#e74c3c;font-weight:500;">Inactive</span></td><td><button class="btn btn-sm btn-secondary">Edit</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>Click <b>+ Add User</b> to expand the new user form.</div></li>
+      <li><span class="num">2</span><div>Enter the staff member's <b>Name</b>, <b>Email</b>, initial <b>Password</b>, and select their <b>Role</b> (Teacher, Class Teacher, Bursar, etc.).</div></li>
+      <li><span class="num">3</span><div>Click <b>Save</b>. The new staff member can immediately log in with those credentials.</div></li>
+      <li><span class="num">4</span><div>To change someone's name or role later, click <b>Edit</b> on their row.</div></li>
+      <li><span class="num">5</span><div>To remove access for a staff member who has left, click <b>Deactivate</b>. Their account is hidden but data is preserved.</div></li>
+    </ol>
+    <div class="tip">The role filter dropdown lets you view only teachers, bursars, etc. — useful for large staff lists.</div>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 15. TIMETABLE                                                     -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="timetable">
+    <h2>15. Class Timetable</h2>
+    <p class="section-desc">
+      The Timetable page shows or builds the weekly schedule of classes. Owners and headmasters
+      can add, edit, and delete timetable slots. Teachers see their own schedule.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/timetable</div>
+      </div>
+      <div class="app-content" style="background:#f4f6fb;padding:20px 24px;">
+        <div class="page-header">
+          <div class="page-title">Timetable</div>
+          <div style="display:flex;gap:10px;">
+            <select class="form-select"><option>Basic 5</option></select>
+            <button class="btn btn-primary">+ Add Slot</button>
+          </div>
+        </div>
+        <table class="data-table" style="background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+          <thead><tr><th>Day</th><th>Start</th><th>End</th><th>Subject</th><th>Teacher</th><th>Class</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-blue">Monday</span></td><td>07:30</td><td>08:15</td><td style="font-weight:500;">Mathematics</td><td>Ms. Abena</td><td>Basic 5</td><td><button class="btn btn-sm btn-secondary" style="margin-right:4px;">Edit</button><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+            <tr><td><span class="badge badge-blue">Monday</span></td><td>08:15</td><td>09:00</td><td style="font-weight:500;">English Language</td><td>Mr. Kweku</td><td>Basic 5</td><td><button class="btn btn-sm btn-secondary" style="margin-right:4px;">Edit</button><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+            <tr><td><span class="badge badge-purple">Tuesday</span></td><td>07:30</td><td>08:15</td><td style="font-weight:500;">Science</td><td>Ms. Abena</td><td>Basic 5</td><td><button class="btn btn-sm btn-secondary" style="margin-right:4px;">Edit</button><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>Select a <b>Class</b> from the dropdown to view its timetable.</div></li>
+      <li><span class="num">2</span><div>Click <b>+ Add Slot</b> to open the slot form. Select the day, start time, end time, subject, teacher, and class.</div></li>
+      <li><span class="num">3</span><div>Click <b>Edit</b> on any slot to change its details. Click <b>Delete</b> to remove it.</div></li>
+    </ol>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 16. STORE / INVENTORY                                             -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="store">
+    <h2>16. Store &amp; Inventory (Owner Only)</h2>
+    <p class="section-desc">
+      The Store section tracks school inventory items — books, stationery, equipment, etc.
+      It monitors stock levels, alerts on low stock, and logs all issues and restocks.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/store</div>
+      </div>
+      <div class="app-content" style="background:#f4f6fb;padding:20px 24px;">
+        <div class="page-title" style="margin-bottom:14px;">Store &amp; Inventory</div>
+
+        <!-- Low stock banner -->
+        <div style="margin-bottom:14px;display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="display:inline-block;padding:3px 10px;background:#fdecea;color:#c0392b;border-radius:20px;font-size:12px;font-weight:600;">⚠ Exercise Books: 4 left</span>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-bottom:14px;">
+          <button class="btn btn-primary btn-sm">+ Add Item</button>
+          <button class="btn btn-secondary btn-sm">+ Issue / Restock</button>
+        </div>
+
+        <table class="data-table" style="background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:20px;">
+          <thead><tr><th>Item</th><th>Qty</th><th>Unit</th><th>Low Threshold</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:500;">Exercise Books</td>
+              <td style="font-weight:700;color:#e74c3c;">4</td>
+              <td>pcs</td><td>10</td>
+              <td><span style="color:#e74c3c;font-weight:600;">LOW</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:500;">Whiteboard Markers</td>
+              <td style="font-weight:700;color:#27ae60;">25</td>
+              <td>pcs</td><td>5</td>
+              <td><span style="color:#27ae60;">OK</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="font-size:14px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">RECENT TRANSACTIONS</div>
+        <table class="data-table" style="background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+          <thead><tr><th>Item</th><th>Type</th><th>Qty</th><th>By</th><th>Notes</th><th>Time</th></tr></thead>
+          <tbody>
+            <tr><td>Exercise Books</td><td><span style="font-weight:700;color:#e67e22;font-size:11px;">ISSUE</span></td><td style="font-weight:700;">-20</td><td>Ms. Abena</td><td>Class 5 distribution</td><td style="color:#aaa;font-size:12px;">07/05/2026</td></tr>
+            <tr><td>Whiteboard Markers</td><td><span style="font-weight:700;color:#27ae60;font-size:11px;">RESTOCK</span></td><td style="font-weight:700;">+30</td><td>Owner</td><td>New order arrived</td><td style="color:#aaa;font-size:12px;">05/05/2026</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>Click <b>+ Add Item</b> to register a new inventory item. Enter the name, initial quantity, unit (pcs, boxes, etc.), and low-stock threshold.</div></li>
+      <li><span class="num">2</span><div>Click <b>+ Issue / Restock</b> to record movement. Select the item, choose <b>Issue</b> (stock goes out) or <b>Restock</b> (stock comes in), enter the quantity, and add optional notes.</div></li>
+      <li><span class="num">3</span><div>Items below their threshold show a red <b>LOW</b> badge and a warning pill at the top of the page.</div></li>
+      <li><span class="num">4</span><div>The <b>Recent Transactions</b> table shows a full log of issues and restocks.</div></li>
+    </ol>
+    <div class="tip warn">The Store is only accessible to users with the <b>Store Manage</b> privilege (Owner by default). Grant it to other roles via the Roles tab if needed.</div>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 17. PROFILE & PASSWORD                                            -->
+  <!-- ================================================================ -->
+  <section class="tutorial-section" id="profile">
+    <h2>17. My Profile &amp; Password</h2>
+    <p class="section-desc">
+      Every user can update their display name and change their password from the Profile page.
+      Access it via the user menu or sidebar.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#ffbd2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <div class="mockup-url">http://localhost:5173/profile</div>
+      </div>
+      <div class="app-content" style="background:#f4f6fb;padding:20px 24px;max-width:600px;">
+        <div class="page-title">My Profile</div>
+
+        <!-- Account info -->
+        <div class="panel" style="margin-bottom:16px;">
+          <div style="font-weight:600;font-size:15px;margin-bottom:12px;">Account Information</div>
+          <div class="profile-info-grid">
+            <div class="profile-field"><div class="field-label">Name</div><div class="field-value">Abena Asare</div></div>
+            <div class="profile-field"><div class="field-label">Email</div><div class="field-value">abena@bf.edu</div></div>
+            <div class="profile-field"><div class="field-label">Role</div><div class="field-value">Teacher</div></div>
+            <div class="profile-field"><div class="field-label">Member Since</div><div class="field-value">01/01/2026</div></div>
+          </div>
+        </div>
+
+        <!-- Update name -->
+        <div class="panel" style="margin-bottom:16px;">
+          <div style="font-weight:600;font-size:15px;margin-bottom:14px;">Update Name</div>
+          <div class="form-group"><label class="form-label">Display Name *</label><input class="form-input" value="Abena Asare" readonly /></div>
+          <button class="btn btn-primary">Update Name</button>
+        </div>
+
+        <!-- Change password -->
+        <div class="panel">
+          <div style="font-weight:600;font-size:15px;margin-bottom:14px;">Change Password</div>
+          <div class="form-group"><label class="form-label">Current Password *</label><input class="form-input" type="password" value="••••••••" readonly /></div>
+          <div class="form-group"><label class="form-label">New Password *</label><input class="form-input" type="password" value="••••••••••" readonly /></div>
+          <div class="form-group"><label class="form-label">Confirm New Password *</label><input class="form-input" type="password" value="••••••••••" readonly /></div>
+          <button class="btn btn-primary">Change Password</button>
+        </div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num">1</span><div>Navigate to <b>My Profile</b> from the sidebar or user menu.</div></li>
+      <li><span class="num">2</span><div>The <b>Account Information</b> card shows your current name, email, role, and join date (read-only).</div></li>
+      <li><span class="num">3</span><div>To change your name, edit the <b>Display Name</b> field and click <b>Update Name</b>. A green success message confirms the change.</div></li>
+      <li><span class="num">4</span><div>To change your password, enter your <b>Current Password</b>, then enter and confirm the new one. Click <b>Change Password</b>.</div></li>
+    </ol>
+    <div class="tip warn">New passwords must be at least 6 characters. If you forget your current password, ask your school owner or headmaster to reset it from the Users page.</div>
+  </section>
+
+
+  <!-- ── Footer ────────────────────────────────────────────────────── -->
+  <div style="margin-top:60px;padding:24px 0;border-top:2px solid #e0e7f0;font-size:13px;color:#aaa;text-align:center;">
+    SchoolSaaS User Tutorial · Generated 2026-05-07 · Exclude admin console
+  </div>
+
+</main>
+</div>
+</body>
+</html>

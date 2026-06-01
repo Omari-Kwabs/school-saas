@@ -1,0 +1,93 @@
+# render.yaml — SchoolOS by Cyborg Technologies
+#
+# DEPLOY STEPS
+# ────────────
+# 1. Push this file to your GitHub/GitLab repo root
+# 2. In Render dashboard → New → Blueprint → connect your repo
+# 3. If "schoolos-api" or "schoolos-frontend" are already taken, Render will
+#    prompt you to rename them. If you rename, update:
+#      - ALLOWED_ORIGINS  (on schoolos-api) → new frontend URL
+#      - VITE_API_BASE    (on schoolos-frontend) → new backend URL + /api
+# 4. After first deploy, go to:
+#    Render dashboard → schoolos-api → Environment → set REDIS_URL
+#    Get a free Redis URL from https://upstash.com (free tier, works with BullMQ)
+#
+# NOTES
+# ─────
+# - PostgreSQL free tier expires after 90 days; upgrade to the $7/mo plan after that
+# - The backend free tier sleeps after 15 min of inactivity (cold start ~30s)
+#   Socket.io connections will drop when the service sleeps — acceptable for testing
+# - File uploads (R2) require Cloudflare R2 credentials; set the R2_* vars in
+#   the dashboard. Cloudflare R2 has a generous free tier.
+
+databases:
+  - name: schoolos-db
+    databaseName: schoolos
+    user: schoolos_user
+    plan: free
+
+services:
+
+  # ── Backend API ─────────────────────────────────────────────────────────────
+  - type: web
+    name: schoolos-api
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install --omit=dev
+    startCommand: node backend/src/index.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true          # Render auto-generates a secure random value
+      - key: DATABASE_URL
+        fromDatabase:
+          name: schoolos-db
+          property: connectionString  # Injected automatically from the DB above
+      - key: ALLOWED_ORIGINS
+        value: https://schoolos-frontend.onrender.com   # Update if frontend service is renamed
+      # ── Required after first deploy ──────────────────────────────────────────
+      # Paste your Upstash Redis connection string (rediss://...) here
+      # Get one free at https://upstash.com → Create Database → copy "REDIS_URL"
+      - key: REDIS_URL
+        sync: false
+      # ── Optional — set in dashboard only if you use these services ───────────
+      - key: SENTRY_DSN
+        sync: false
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET
+        sync: false
+      - key: R2_ENDPOINT
+        sync: false
+      - key: R2_CDN_BASE
+        sync: false
+
+  # ── Frontend Static Site ─────────────────────────────────────────────────────
+  - type: web
+    name: schoolos-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      # Points the frontend to the backend. Update if schoolos-api was renamed.
+      - key: VITE_API_BASE
+        value: https://schoolos-api.onrender.com/api
+      # Optional: set to your Sentry DSN for frontend error tracking
+      - key: VITE_SENTRY_DSN
+        sync: false
+    routes:
+      # Required for React Router — sends all paths to index.html
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      # Long-lived cache for Vite's content-hashed assets
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable

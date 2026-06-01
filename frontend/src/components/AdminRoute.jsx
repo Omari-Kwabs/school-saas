@@ -1,0 +1,15 @@
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
+export default function AdminRoute({ children }) {
+  const { user, loading } = useAuth();
+  if (loading) return (
+    <div style={{ minHeight: '100vh', background: '#0f172a', display: 'flex',
+                  alignItems: 'center', justifyContent: 'center', color: '#64748b', fontSize: 14 }}>
+      Loading…
+    </div>
+  );
+  if (!user || user.role !== 'system_admin') return <Navigate to="/admin/login" replace />;
+  return children;
+}

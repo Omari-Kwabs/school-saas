@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Class Report — {{termName}}</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+    th, td { border: 1px solid #ddd; padding: 6px 10px; text-align: left; }
+    th { background: #f2f2f2; }
+    .strong  { color: green; }
+    .average { color: orange; }
+    .weak    { color: red; }
+    h2 { page-break-before: always; }
+    h2:first-of-type { page-break-before: auto; }
+  </style>
+</head>
+<body>
+
+<h1>Class Report Cards — {{termName}}</h1>
+
+{{#each cards}}
+<h2>{{student.name}} ({{student.student_code}})</h2>
+<table>
+  <tr>
+    <th>Subject</th>
+    <th>Score</th>
+    <th>Max</th>
+    <th>%</th>
+    <th>Grade</th>
+  </tr>
+  {{#each subjects}}
+  <tr>
+    <td>{{name}}</td>
+    <td>{{totalStr}}</td>
+    <td>{{maxStr}}</td>
+    <td>{{pctStr}}</td>
+    <td class="{{gradeClass}}">{{gradeLabel}}</td>
+  </tr>
+  {{/each}}
+  <tr>
+    <th>TOTAL</th>
+    <th>{{totalStr}}</th>
+    <th>{{maxStr}}</th>
+    <th>{{pctStr}}</th>
+    <th class="{{gradeClass}}">{{gradeLabel}}</th>
+  </tr>
+</table>
+{{/each}}
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.sidebar-nav::-webkit-scrollbar { display: none; }
+.sidebar-nav { -ms-overflow-style: none; scrollbar-width: none; background: transparent !important; }
+
+/* ── Brand theming via CSS custom properties ─────────────────────────────── */
+.sidebar-item {
+  transition: background 0.15s, color 0.15s;
+  color: rgba(255,255,255,0.5);
+}
+.sidebar-item:hover {
+  background: var(--brand-sidebar-hover) !important;
+  color: #fff !important;
+}
+.sidebar-item-active {
+  background: var(--brand-sidebar-active) !important;
+  color: #fff !important;
+}
+.topbar-surface-btn:hover {
+  background: rgba(0,0,0,0.12) !important;
+}
+
+html, body, #root { height: 100%; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: sans-serif;
+  background: #f0f2f5;
+  color: #222;
+  font-size: 14px;
+}
+
+a { color: var(--brand-primary, #4f46e5); text-decoration: none; }
+
+/* Nav */
+nav {
+  background: #1a1a2e;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 48px;
+  position: relative;
+  z-index: 200;
+}
+nav .brand { color: #fff; font-weight: bold; font-size: 16px; margin-right: 12px; flex-shrink: 0; }
+nav > a { color: #ccc; padding: 14px 10px; display: inline-block; font-size: 13px; white-space: nowrap; }
+nav > a:hover, nav > a.active { color: #fff; }
+nav .nav-end { margin-left: auto; display: flex; align-items: center; gap: 10px; color: #aaa; font-size: 13px; flex-shrink: 0; }
+
+/* Nav dropdown groups */
+.nav-group { position: relative; }
+.nav-group-label {
+  color: #ccc;
+  padding: 14px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  cursor: default;
+  user-select: none;
+  white-space: nowrap;
+}
+.nav-group-label::after { content: '▾'; font-size: 9px; opacity: 0.7; }
+.nav-group:hover .nav-group-label { color: #fff; }
+.nav-group .nav-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #16213e;
+  border-radius: 0 4px 4px 4px;
+  min-width: 170px;
+  z-index: 300;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+  padding: 4px 0;
+}
+.nav-group:hover .nav-dropdown { display: block; }
+.nav-group .nav-dropdown a {
+  display: block;
+  padding: 9px 16px;
+  color: #bbb;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.nav-group .nav-dropdown a:hover { color: #fff; background: rgba(255,255,255,0.07); }
+.nav-group .nav-dropdown a.active { color: #fff; background: var(--brand-primary-muted, rgba(79,70,229,0.18)); }
+
+/* Page */
+.page { padding: 20px; max-width: 1100px; margin: 0 auto; }
+.page-title { font-size: 20px; font-weight: 600; margin-bottom: 16px; }
+
+/* Cards */
+.card { background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.cards-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.cards-row .card { flex: 1; min-width: 160px; }
+.card-label { font-size: 12px; color: #666; margin-bottom: 6px; }
+.card-value { font-size: 24px; font-weight: 700; color: var(--brand-primary, #4f46e5); }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 13px; }
+th { background: #f8f9fa; font-weight: 600; color: #444; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #fafafa; }
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 7px 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+.btn:hover { opacity: 0.85; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { background: var(--brand-primary, #4f46e5); color: var(--brand-text-on-primary, #fff); }
+.btn-secondary { background: #6c757d; color: #fff; }
+.btn-danger { background: #dc3545; color: #fff; }
+.btn-success { background: #28a745; color: #fff; }
+.btn-sm { padding: 4px 9px; font-size: 12px; }
+
+/* Forms */
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; font-size: 12px; color: #555; margin-bottom: 4px; font-weight: 500; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 13px;
+  outline: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--brand-primary, #4f46e5);
+  box-shadow: 0 0 0 3px var(--brand-primary-muted, rgba(79,70,229,0.15));
+}
+.form-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.form-row .form-group { flex: 1; min-width: 140px; }
+
+/* Alerts */
+.alert { padding: 10px 14px; border-radius: 5px; margin-bottom: 12px; font-size: 13px; }
+.alert-error { background: #fdecea; color: #c0392b; border: 1px solid #f5c6cb; }
+.alert-success { background: #eafaf1; color: #1e8449; border: 1px solid #b7dfc5; }
+
+/* Inline panel */
+.panel { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+.panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.panel-header h3 { font-size: 15px; font-weight: 600; }
+
+/* Filters bar */
+.filters { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 16px; }
+.filters .form-group { margin-bottom: 0; min-width: 140px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 0; border-bottom: 2px solid #ddd; margin-bottom: 16px; }
+.tab { padding: 8px 18px; cursor: pointer; font-size: 13px; color: #666; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+.tab.active { color: var(--brand-primary, #4f46e5); border-bottom-color: var(--brand-primary, #4f46e5); font-weight: 600; }
+
+/* Login */
+.login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #1a1a2e; }
+.login-card { background: #fff; border-radius: 10px; padding: 32px; width: 100%; max-width: 380px; }
+.login-card h1 { font-size: 22px; text-align: center; margin-bottom: 24px; color: #1a1a2e; }
+
+/* Score input */
+input.score-input { width: 70px; padding: 4px 6px; text-align: center; }
+
+/* Risk badges */
+.risk-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.risk-low { background: #d4edda; color: #155724; }
+.risk-medium { background: #fff3cd; color: #856404; }
+.risk-high { background: #f8d7da; color: #721c24; }
+
+.risk-summary {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+.risk-summary.risk-low { background: #d4edda; border: 1px solid #c3e6cb; }
+.risk-summary.risk-medium { background: #fff3cd; border: 1px solid #ffeaa7; }
+.risk-summary.risk-high { background: #f8d7da; border: 1px solid #f5c6cb; }
+
+/* ── Tailwind brand-colour overrides ────────────────────────────────────────
+   Targets every bg-indigo-*, text-indigo-*, border-indigo-* and ring-indigo-*
+   class used across the app so the brand colour propagates without touching
+   individual components.                                                      */
+
+/* Solid backgrounds */
+.bg-indigo-600  { background-color: var(--brand-primary)       !important; }
+.bg-indigo-700  { background-color: var(--brand-primary-dark)  !important; }
+.bg-indigo-400  { background-color: var(--brand-primary-light) !important; }
+.bg-indigo-100  { background-color: var(--brand-primary-light) !important; }
+.bg-indigo-50   { background-color: var(--brand-primary-muted) !important; }
+
+/* Hover backgrounds */
+.hover\:bg-indigo-700:hover  { background-color: var(--brand-primary-dark)  !important; }
+.hover\:bg-indigo-600:hover  { background-color: var(--brand-primary)       !important; }
+.hover\:bg-indigo-100:hover  { background-color: var(--brand-primary-light) !important; }
+.hover\:bg-indigo-50:hover   { background-color: var(--brand-primary-muted) !important; }
+
+/* Text */
+.text-indigo-600 { color: var(--brand-primary)       !important; }
+.text-indigo-700 { color: var(--brand-primary-dark)  !important; }
+.text-indigo-800 { color: var(--brand-primary-dark)  !important; }
+.text-indigo-400 { color: var(--brand-primary-light) !important; }
+.text-indigo-300 { color: var(--brand-primary-light) !important; }
+
+/* Hover text */
+.hover\:text-indigo-700:hover { color: var(--brand-primary-dark)  !important; }
+.hover\:text-indigo-800:hover { color: var(--brand-primary-dark)  !important; }
+.hover\:text-indigo-600:hover { color: var(--brand-primary)       !important; }
+
+/* Borders */
+.border-indigo-600 { border-color: var(--brand-primary)       !important; }
+.border-indigo-500 { border-color: var(--brand-primary)       !important; }
+.border-indigo-200 { border-color: var(--brand-primary-light) !important; }
+.border-indigo-100 { border-color: var(--brand-primary-muted) !important; }
+
+/* Focus rings — Tailwind rings use --tw-ring-color */
+.focus\:ring-indigo-500:focus { --tw-ring-color: var(--brand-primary) !important; }
+.focus\:ring-indigo-600:focus { --tw-ring-color: var(--brand-primary) !important; }
+.ring-indigo-500              { --tw-ring-color: var(--brand-primary) !important; }
+
+/* Focus border */
+.focus\:border-indigo-500:focus { border-color: var(--brand-primary) !important; }
+
+/* ── blue-* overrides (components that use blue instead of indigo) ──────────*/
+
+/* Solid backgrounds */
+.bg-blue-600  { background-color: var(--brand-primary)       !important; }
+.bg-blue-700  { background-color: var(--brand-primary-dark)  !important; }
+.bg-blue-500  { background-color: var(--brand-primary)       !important; }
+.bg-blue-400  { background-color: var(--brand-primary-light) !important; }
+.bg-blue-200  { background-color: var(--brand-primary-light) !important; }
+.bg-blue-100  { background-color: var(--brand-primary-light) !important; }
+.bg-blue-50   { background-color: var(--brand-primary-muted) !important; }
+
+/* Hover backgrounds */
+.hover\:bg-blue-700:hover  { background-color: var(--brand-primary-dark)  !important; }
+.hover\:bg-blue-600:hover  { background-color: var(--brand-primary)       !important; }
+.hover\:bg-blue-200:hover  { background-color: var(--brand-primary-light) !important; }
+.hover\:bg-blue-100:hover  { background-color: var(--brand-primary-light) !important; }
+
+/* Text */
+.text-blue-900 { color: var(--brand-primary-dark)  !important; }
+.text-blue-800 { color: var(--brand-primary-dark)  !important; }
+.text-blue-700 { color: var(--brand-primary-dark)  !important; }
+.text-blue-600 { color: var(--brand-primary)       !important; }
+.text-blue-500 { color: var(--brand-primary)       !important; }
+
+/* Hover text */
+.hover\:text-blue-700:hover { color: var(--brand-primary-dark) !important; }
+.hover\:text-blue-600:hover { color: var(--brand-primary)      !important; }
+
+/* Borders */
+.border-blue-500 { border-color: var(--brand-primary)       !important; }
+.border-blue-400 { border-color: var(--brand-primary)       !important; }
+.border-blue-300 { border-color: var(--brand-primary-light) !important; }
+.border-blue-200 { border-color: var(--brand-primary-light) !important; }
+.border-blue-100 { border-color: var(--brand-primary-muted) !important; }
+
+/* Focus rings */
+.focus\:ring-blue-500:focus { --tw-ring-color: var(--brand-primary) !important; }
+.focus\:ring-blue-600:focus { --tw-ring-color: var(--brand-primary) !important; }
+.ring-blue-500              { --tw-ring-color: var(--brand-primary) !important; }
+
+/* Focus border */
+.focus\:border-blue-500:focus { border-color: var(--brand-primary) !important; }
+
+/* Native inputs / selects without a .form-group wrapper */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--brand-primary, #4f46e5) !important;
+  box-shadow: 0 0 0 3px var(--brand-primary-muted, rgba(79,70,229,0.15)) !important;
+}
