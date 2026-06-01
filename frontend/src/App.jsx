@@ -82,7 +82,7 @@ export default function App() {
             <Route path="/admin/logs"       element={<AdminRoute><AdminLogs /></AdminRoute>} />
 
             <Route element={<AppLayout />}>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/" element={<Navigate to="/login" replace />} />
 
               {/* Open to all authenticated users */}
               <Route path="/dashboard"     element={<PrivateRoute><Dashboard /></PrivateRoute>} />
