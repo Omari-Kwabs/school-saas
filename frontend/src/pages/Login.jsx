@@ -19,8 +19,9 @@ export default function Login() {
     e.preventDefault();
     setError('');
     setSubmitting(true);
+    const API = import.meta.env.VITE_API_BASE || '/api';
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(`${API}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

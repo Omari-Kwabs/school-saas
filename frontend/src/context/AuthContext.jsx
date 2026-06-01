@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import client from '../api/client';
 import { connectSocket, disconnectSocket } from '../lib/socket';
 
 const AuthContext = createContext(null);
@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     // Restore session from httpOnly cookie by asking the server
-    axios.get('/api/auth/me', { withCredentials: true })
+    client.get('/auth/me')
       .then(r => {
         setUser(r.data);
         if (r.data.school_id) connectSocket();

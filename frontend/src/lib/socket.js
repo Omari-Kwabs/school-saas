@@ -2,11 +2,14 @@ import { io } from 'socket.io-client';
 
 let socket = null;
 
+const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+const SOCKET_URL = API_BASE.replace(/\/api$/, '') || window.location.origin;
+
 export function connectSocket() {
   if (socket?.connected) return socket;
-  socket = io('/', {
+  socket = io(SOCKET_URL, {
     transports: ['websocket'],
-    withCredentials: true, // sends httpOnly auth_token cookie automatically
+    withCredentials: true,
   });
   return socket;
 }

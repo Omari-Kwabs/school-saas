@@ -15,8 +15,9 @@ export default function AdminLogin() {
   async function submit(e) {
     e.preventDefault();
     setError(''); setLoading(true);
+    const API = import.meta.env.VITE_API_BASE || '/api';
     try {
-      const res = await fetch('/api/auth/admin-login', {
+      const res = await fetch(`${API}/auth/admin-login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
