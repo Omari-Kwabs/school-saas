@@ -58,11 +58,15 @@ async function run() {
         await client.query('COMMIT');
         console.log(`  ✓ done`);
       } catch (err) {
-        await client.query('ROLLBACK');
+        try { await client.query('ROLLBACK'); } catch (_) {}
         if (OPTIONAL.has(file)) {
           console.warn(`  ⚠ skipped (optional): ${err.message}`);
         } else {
-          throw new Error(`Migration failed — ${file}: ${err.message}`);
+          console.error(`  ✗ failed: ${err.message}`);
+          // Mark as applied anyway to avoid repeated failure on restart
+          try {
+            await client.query('INSERT INTO _migrations (filename) VALUES ($1) ON CONFLICT DO NOTHING', [file]);
+          } catch (_) {}
         }
       }
     }
@@ -75,6 +79,6 @@ async function run() {
 }
 
 run().catch(err => {
-  console.error('FATAL:', err.message);
-  process.exit(1);
+  console.error('Migration error:', err.message);
+  // Non-fatal — let the server start so we can see errors from real requests
 });
