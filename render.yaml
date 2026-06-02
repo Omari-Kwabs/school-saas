@@ -34,7 +34,7 @@ services:
     env: node
     plan: free
     buildCommand: cd backend && npm install --omit=dev
-    startCommand: node backend/src/index.js
+    startCommand: node backend/scripts/migrate.js && node backend/src/index.js
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
